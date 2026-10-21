@@ -1,0 +1,31 @@
+{
+  "_comment": "emotion -> { file, eye_open_cap, default_intensity }. eye_open_cap limits ParamEyeLOpen/ParamEyeROpen on top of the automatic blink. Blends are weighted lists that resolve at runtime.",
+  "neutral":   { "file": null,                              "eye_open_cap": 1.0, "default_intensity": 1.0 },
+  "happy":     { "file": "expressions/Happy.exp3.json",     "eye_open_cap": 1.0, "default_intensity": 1.0 },
+  "content":   { "file": "expressions/Smile_1.exp3.json",   "eye_open_cap": 1.0, "default_intensity": 1.0 },
+  "excited":   { "file": "expressions/Excited.exp3.json",   "eye_open_cap": 1.0, "default_intensity": 1.0 },
+  "surprised": { "file": "expressions/Surprise.exp3.json",  "eye_open_cap": 1.0, "default_intensity": 1.0 },
+  "scared":    { "file": "expressions/Scared.exp3.json",    "eye_open_cap": 1.0, "default_intensity": 1.0 },
+  "angry":     { "file": "expressions/Angry.exp3.json",     "eye_open_cap": 1.0, "default_intensity": 1.0 },
+  "dreamy":    { "file": "expressions/Shining_eyes.exp3.json", "eye_open_cap": 1.0, "default_intensity": 1.0 },
+  "sad":       { "file": "expressions/Sad.exp3.json",       "eye_open_cap": 0.7, "default_intensity": 1.0 },
+  "romantic":  { "file": "expressions/Romantic.exp3.json",  "eye_open_cap": 0.85,"default_intensity": 1.0 },
+  "smug":      { "file": "expressions/Smug.exp3.json",      "eye_open_cap": 0.75,"default_intensity": 1.0 },
+  "shy":       { "file": "expressions/Shy.exp3.json",       "eye_open_cap": 0.9, "default_intensity": 1.0 },
+  "pout":      { "file": "expressions/Pout.exp3.json",      "eye_open_cap": 0.9, "default_intensity": 1.0 },
+  "sleepy":    { "file": "expressions/Sleepy.exp3.json",    "eye_open_cap": 0.2, "default_intensity": 1.0 },
+  "bored":     { "file": "expressions/Bored.exp3.json",     "eye_open_cap": 0.5, "default_intensity": 1.0 },
+  "thinking":  { "file": "expressions/Thinking.exp3.json",  "eye_open_cap": 1.0, "default_intensity": 1.0 },
+
+  "_blends": {
+    "jealous": {
+      "weights": { "pout": 0.5, "angry": 0.3, "sad": 0.2 }
+    },
+    "caring": {
+      "weights": { "happy": 0.4, "romantic": 0.4, "content": 0.2 }
+    },
+    "proud": {
+      "weights": { "dreamy": 0.5, "smug": 0.3, "happy": 0.2 }
+    }
+  }
+}

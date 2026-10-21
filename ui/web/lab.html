@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anya – Expression Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:        #0d1117;
+            --panel:     rgba(22, 27, 38, 0.88);
+            --border:    rgba(255,255,255,0.09);
+            --accent:    #e879f9;
+            --accent2:   #38bdf8;
+            --text:      #e2e8f0;
+            --muted:     #64748b;
+            --radius:    10px;
+            --hdr-height: 48px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html, body {
+            width:100%; height:100%;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        /* ── Layout ─────────────────────────────────────────── */
+        #header {
+            height: var(--hdr-height);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px;
+            background: rgba(13,17,23,0.95);
+            border-bottom: 1px solid var(--border);
+            z-index: 20; position: relative;
+        }
+        #header h1 {
+            font-size: 14px; font-weight: 700; letter-spacing: .05em;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+        #header .status { font-size: 11px; color: var(--muted); }
+
+        #layout {
+            display: flex;
+            height: calc(100% - var(--hdr-height));
+        }
+
+        /* ── Canvas (preview) ───────────────────────────────── */
+        #canvas-wrap {
+            flex: 1; position: relative;
+        }
+        #canvas {
+            width:100%; height:100%;
+            display:block;
+            background: transparent;
+        }
+
+        /* ── Side panel ─────────────────────────────────────── */
+        #panel {
+            width: 340px; min-width: 280px;
+            display: flex; flex-direction: column;
+            border-left: 1px solid var(--border);
+            background: rgba(13,17,23,0.96);
+            overflow: hidden;
+        }
+
+        /* ── Tabs ───────────────────────────────────────────── */
+        #tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .tab {
+            flex:1; padding: 11px 0; text-align: center;
+            font-size: 11px; font-weight: 600;
+            letter-spacing: .04em; text-transform: uppercase;
+            cursor: pointer; color: var(--muted);
+            transition: color .15s, border-bottom .15s;
+            border-bottom: 2px solid transparent;
+        }
+        .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        /* ── Tab content ────────────────────────────────────── */
+        .tab-pane {
+            display:none; flex-direction:column;
+            flex:1; overflow:hidden;
+        }
+        .tab-pane.active { display:flex; }
+
+        /* ── Parameter list ─────────────────────────────────── */
+        #param-list {
+            flex: 1; overflow-y: auto;
+            padding: 12px 14px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        #param-list::-webkit-scrollbar { width: 5px; }
+        #param-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius:3px; }
+
+        .param-group-header {
+            font-size: 10px; font-weight: 700; letter-spacing: .07em;
+            text-transform: uppercase; color: var(--accent);
+            margin: 10px 0 4px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(232,121,249,.2);
+        }
+
+        .param-row {
+            display: grid;
+            grid-template-columns: 110px 1fr 54px;
+            align-items: center; gap: 8px;
+        }
+        .param-name {
+            font-size: 11px; color: var(--text);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .param-slider {
+            -webkit-appearance: none; appearance: none;
+            height: 4px; border-radius: 4px;
+            background: linear-gradient(to right, var(--accent) var(--pct, 50%), rgba(255,255,255,.1) var(--pct, 50%));
+            outline: none; cursor: pointer;
+        }
+        .param-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 13px; height: 13px; border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 6px rgba(232,121,249,.6);
+        }
+        .param-value {
+            font-size: 11px; text-align: right; color: var(--accent2);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ── Toolbar (Export / Load / Reset) ────────────────── */
+        #toolbar {
+            display: flex; gap: 8px; padding: 12px 14px;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .btn {
+            flex:1; padding: 8px 4px;
+            background: rgba(255,255,255,.05);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text); font-size: 11px; font-weight: 600;
+            cursor: pointer; transition: background .15s, border-color .15s, color .15s;
+        }
+        .btn:hover { background: rgba(232,121,249,.15); border-color: var(--accent); color: #fff; }
+        .btn.primary { background: var(--accent); border-color: var(--accent); color: #0d1117; }
+        .btn.primary:hover { background: #d946ef; }
+
+        /* ── Blend Mixer ────────────────────────────────────── */
+        #blend-pane {
+            flex:1; overflow-y:auto; padding:14px;
+        }
+        #blend-pane::-webkit-scrollbar { width: 5px; }
+        #blend-pane::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:3px; }
+
+        .blend-section { margin-bottom: 18px; }
+        .blend-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+
+        select#blend-a, select#blend-b {
+            width:100%; padding: 7px 10px;
+            background: rgba(255,255,255,.05);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text); font-size: 12px;
+            margin-bottom: 10px;
+        }
+        #blend-ratio-row {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 10px;
+        }
+        #blend-ratio-row label { font-size:11px; color:var(--muted); white-space:nowrap; }
+        #blend-ratio { flex:1; }
+        #blend-ratio-val { font-size:11px; color:var(--accent2); width:32px; text-align:right; }
+
+        #apply-blend {
+            width:100%; padding: 9px; margin-top:4px;
+            background: var(--accent2); border:none; border-radius:var(--radius);
+            color:#0d1117; font-size:12px; font-weight:700; cursor:pointer;
+        }
+        #apply-blend:hover { background:#0ea5e9; }
+
+        .blend-result {
+            margin-top: 14px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px;
+            font-size: 11px;
+            max-height: 180px; overflow-y:auto;
+        }
+        .blend-result::-webkit-scrollbar { width:4px; }
+        .blend-result::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:3px; }
+        .blend-result pre { color: var(--accent2); white-space:pre-wrap; word-break:break-all; }
+
+        /* ── Hidden file input ──────────────────────────────── */
+        #file-input { display:none; }
+
+        /* ── Toast ──────────────────────────────────────────── */
+        #toast {
+            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+            background: rgba(22,27,38,.95); border: 1px solid var(--border);
+            border-radius: 8px; padding: 9px 20px;
+            font-size: 12px; color: var(--text);
+            opacity: 0; pointer-events:none;
+            transition: opacity .25s;
+            z-index: 100;
+        }
+        #toast.show { opacity: 1; }
+    </style>
+
+    <!-- Live2D stack -->
+    <script src="vendor/live2dcubismcore.min.js"></script>
+    <script src="vendor/pixi.min.js"></script>
+    <script src="vendor/cubism4.min.js"></script>
+</head>
+<body>
+
+<div id="header">
+    <h1>🧪 Anya — Expression Lab</h1>
+    <span class="status" id="model-status">Loading model…</span>
+</div>
+
+<div id="layout">
+    <!-- Canvas preview -->
+    <div id="canvas-wrap">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <!-- Side panel -->
+    <div id="panel">
+        <div id="tabs">
+            <div class="tab active" data-tab="params" id="tab-params">Parameters</div>
+            <div class="tab" data-tab="blend"  id="tab-blend">Blend Mixer</div>
+        </div>
+
+        <!-- ── Parameters tab ── -->
+        <div class="tab-pane active" id="pane-params">
+            <div id="param-list">
+                <div class="param-group-header">Loading…</div>
+            </div>
+            <div id="toolbar">
+                <button class="btn" id="btn-reset">Reset</button>
+                <button class="btn" id="btn-load">Load Expr</button>
+                <button class="btn primary" id="btn-export">Export JSON</button>
+            </div>
+        </div>
+
+        <!-- ── Blend Mixer tab ── -->
+        <div class="tab-pane" id="pane-blend">
+            <div id="blend-pane">
+                <div class="blend-section">
+                    <div class="blend-label">Expression A</div>
+                    <select id="blend-a"></select>
+                    <div class="blend-label">Expression B</div>
+                    <select id="blend-b"></select>
+                    <div id="blend-ratio-row">
+                        <label>A ← mix → B</label>
+                        <input type="range" id="blend-ratio" min="0" max="1" step="0.01" value="0.5"
+                               class="param-slider">
+                        <span id="blend-ratio-val">0.50</span>
+                    </div>
+                    <button id="apply-blend">Preview Blend</button>
+                    <div class="blend-result" id="blend-result" style="display:none">
+                        <pre id="blend-result-json"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="file" id="file-input" accept=".json">
+<div id="toast"></div>
+
+<script>
+// ──────────────────────────────────────────────────────────────────────────────
+// Lab.html – standalone expression editor (no QWebChannel, no bridge.py needed)
+// ──────────────────────────────────────────────────────────────────────────────
+
+const MODEL_URL  = "/assets/model/Anya_model.model3.json";
+const CDI_URL    = "/assets/model/Anya_model.cdi3.json";
+
+let _model = null;
+let _core  = null;
+let _params = [];      // [{id, name, groupId, groupName, min, max, default}]
+let _sliders = {};     // paramId → <input type=range>
+let _valueEls = {};    // paramId → <span>
+let _expressionFiles = {}; // name → url  (from model3.json)
+
+// ── PIXI app ──────────────────────────────────────────────────────────────────
+const app = new PIXI.Application({
+    view: document.getElementById("canvas"),
+    width:  document.getElementById("canvas-wrap").clientWidth  || 500,
+    height: document.getElementById("canvas-wrap").clientHeight || 700,
+    transparent: true, backgroundAlpha: 0,
+    autoDensity: true, resolution: window.devicePixelRatio || 1,
+    antialias: true,
+});
+
+window.addEventListener("resize", () => {
+    const w = document.getElementById("canvas-wrap").clientWidth;
+    const h = document.getElementById("canvas-wrap").clientHeight;
+    app.renderer.resize(w, h);
+    if (_model) _fitModel();
+});
+
+// ── Load model ────────────────────────────────────────────────────────────────
+async function _boot() {
+    try {
+        // Fetch CDI3 for param names + groups.
+        const cdiResp = await fetch(CDI_URL);
+        const cdi = await cdiResp.json();
+
+        // Fetch model3 for expression file list.
+        const m3Resp = await fetch(MODEL_URL);
+        const m3 = await m3Resp.json();
+        for (const e of (m3.FileReferences.Expressions || [])) {
+            _expressionFiles[e.Name] = "/assets/model/" + e.File;
+        }
+        _populateBlendSelects();
+
+        // Load Live2D model.
+        const { Live2DModel } = PIXI.live2d;
+        _model = await Live2DModel.from(MODEL_URL, { autoInteract: false });
+        app.stage.addChild(_model);
+        _fitModel();
+
+        _core = _model.internalModel && _model.internalModel.coreModel;
+        _buildParamList(cdi);
+        _renderParamList();
+
+        document.getElementById("model-status").textContent = "Model loaded ✓";
+    } catch (err) {
+        document.getElementById("model-status").textContent = "Error: " + err.message;
+        console.error("[Lab] Boot error:", err);
+    }
+}
+
+// ── Fit model to canvas ───────────────────────────────────────────────────────
+function _fitModel() {
+    const w = app.screen.width;
+    const h = app.screen.height;
+    const mw = _model.internalModel.width;
+    const mh = _model.internalModel.height;
+    const scale = Math.min(w / mw, h / mh) * 0.88;
+    _model.scale.set(scale);
+    _model.x = w / 2;
+    _model.y = h / 2;
+    _model.anchor.set(0.5, 0.5);
+}
+
+// ── Build parameter list from CDI3 ────────────────────────────────────────────
+function _buildParamList(cdi) {
+    const groupNames = {};
+    for (const g of (cdi.ParameterGroups || [])) {
+        groupNames[g.Id] = g.Name;
+    }
+
+    const count = _core ? _core.getParameterCount() : 0;
+
+    // Build id→{min,max,default} from moc.
+    const mocInfo = {};
+    for (let i = 0; i < count; i++) {
+        mocInfo[_core.getParameterId(i)] = {
+            min:     _core.getParameterMinimumValue(i),
+            max:     _core.getParameterMaximumValue(i),
+            default: _core.getParameterDefaultValue(i),
+        };
+    }
+
+    for (const p of (cdi.Parameters || [])) {
+        const info = mocInfo[p.Id] || { min: -1, max: 1, default: 0 };
+        _params.push({
+            id:        p.Id,
+            name:      p.Name,
+            groupId:   p.GroupId,
+            groupName: groupNames[p.GroupId] || p.GroupId,
+            min:       info.min,
+            max:       info.max,
+            default:   info.default,
+        });
+    }
+
+    // Also add any moc params not in CDI3.
+    const cdiIds = new Set(_params.map(p => p.id));
+    for (let i = 0; i < count; i++) {
+        const id = _core.getParameterId(i);
+        if (!cdiIds.has(id)) {
+            const info = mocInfo[id];
+            _params.push({
+                id, name: id, groupId: "other", groupName: "Other",
+                min: info.min, max: info.max, default: info.default,
+            });
+        }
+    }
+}
+
+// ── Render sliders ────────────────────────────────────────────────────────────
+function _renderParamList() {
+    const container = document.getElementById("param-list");
+    container.innerHTML = "";
+
+    const byGroup = {};
+    for (const p of _params) {
+        (byGroup[p.groupName] = byGroup[p.groupName] || []).push(p);
+    }
+
+    for (const [groupName, params] of Object.entries(byGroup)) {
+        const hdr = document.createElement("div");
+        hdr.className = "param-group-header";
+        hdr.textContent = groupName;
+        container.appendChild(hdr);
+
+        for (const p of params) {
+            const row  = document.createElement("div");
+            row.className = "param-row";
+
+            const nameEl = document.createElement("div");
+            nameEl.className = "param-name";
+            nameEl.title = p.id;
+            nameEl.textContent = p.name;
+
+            const slider = document.createElement("input");
+            slider.type = "range";
+            slider.className = "param-slider";
+            slider.min  = p.min;
+            slider.max  = p.max;
+            slider.step = (p.max - p.min) / 200;
+            slider.value = p.default;
+            slider.id = "slider_" + p.id;
+            _updateSliderBackground(slider);
+
+            const valEl = document.createElement("span");
+            valEl.className = "param-value";
+            valEl.textContent = _fmt(p.default);
+
+            slider.addEventListener("input", () => {
+                const v = parseFloat(slider.value);
+                valEl.textContent = _fmt(v);
+                _updateSliderBackground(slider);
+                if (_core) {
+                    try { _core.setParameterValueById(p.id, v); } catch(_) {}
+                }
+            });
+
+            _sliders[p.id]  = slider;
+            _valueEls[p.id] = valEl;
+
+            row.appendChild(nameEl);
+            row.appendChild(slider);
+            row.appendChild(valEl);
+            container.appendChild(row);
+        }
+    }
+}
+
+function _updateSliderBackground(slider) {
+    const min = parseFloat(slider.min);
+    const max = parseFloat(slider.max);
+    const val = parseFloat(slider.value);
+    const pct = ((val - min) / (max - min) * 100).toFixed(1) + "%";
+    slider.style.setProperty("--pct", pct);
+}
+
+function _fmt(v) { return v.toFixed(3); }
+
+// ── Collect current slider values ─────────────────────────────────────────────
+function _collectValues() {
+    const out = {};
+    for (const p of _params) {
+        const sl = _sliders[p.id];
+        if (sl) out[p.id] = parseFloat(sl.value);
+    }
+    return out;
+}
+
+// ── Reset all sliders to defaults ─────────────────────────────────────────────
+function _reset() {
+    for (const p of _params) {
+        const sl = _sliders[p.id];
+        if (!sl) continue;
+        sl.value = p.default;
+        _valueEls[p.id].textContent = _fmt(p.default);
+        _updateSliderBackground(sl);
+        if (_core) { try { _core.setParameterValueById(p.id, p.default); } catch(_) {} }
+    }
+}
+
+// ── Export as exp3.json ───────────────────────────────────────────────────────
+function _exportJSON() {
+    const values = _collectValues();
+    const parameters = [];
+    for (const p of _params) {
+        const v = values[p.id] ?? p.default;
+        if (Math.abs(v - p.default) > 0.0005 || Math.abs(v) > 0.0005) {
+            parameters.push({ Id: p.id, Value: v, Blend: "Add" });
+        }
+    }
+    const data = { "Type": "Live2D Expression", Parameters: parameters };
+    const blob = new Blob([JSON.stringify(data, null, 4)], { type: "application/json" });
+    const url  = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "expression.exp3.json";
+    a.click(); URL.revokeObjectURL(url);
+    _toast("Exported expression.exp3.json");
+}
+
+// ── Load exp3.json from disk ──────────────────────────────────────────────────
+function _loadFile() {
+    document.getElementById("file-input").click();
+}
+
+document.getElementById("file-input").addEventListener("change", (ev) => {
+    const file = ev.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = JSON.parse(e.target.result);
+            _applyExpData(data);
+            _toast("Loaded: " + file.name);
+        } catch (err) {
+            _toast("Error: " + err.message);
+        }
+    };
+    reader.readAsText(file);
+    ev.target.value = "";
+});
+
+function _applyExpData(data) {
+    _reset();
+    for (const p of (data.Parameters || [])) {
+        const sl = _sliders[p.Id];
+        if (!sl) continue;
+        sl.value = p.Value;
+        _valueEls[p.Id].textContent = _fmt(p.Value);
+        _updateSliderBackground(sl);
+        if (_core) { try { _core.setParameterValueById(p.Id, p.Value); } catch(_) {} }
+    }
+}
+
+// ── Blend Mixer ───────────────────────────────────────────────────────────────
+let _blendDataCache = {};
+
+function _populateBlendSelects() {
+    const names = Object.keys(_expressionFiles);
+    for (const selId of ["blend-a", "blend-b"]) {
+        const sel = document.getElementById(selId);
+        sel.innerHTML = '<option value="">— none —</option>';
+        for (const n of names) {
+            const opt = document.createElement("option");
+            opt.value = n; opt.textContent = n.replace(".exp3", "");
+            sel.appendChild(opt);
+        }
+    }
+    if (names.length >= 2) {
+        document.getElementById("blend-a").value = names[0];
+        document.getElementById("blend-b").value = names[1];
+    }
+}
+
+async function _fetchExp(name) {
+    if (!name || !_expressionFiles[name]) return {};
+    if (_blendDataCache[name]) return _blendDataCache[name];
+    try {
+        const resp = await fetch(_expressionFiles[name]);
+        const data = await resp.json();
+        const map = {};
+        for (const p of (data.Parameters || [])) map[p.Id] = p.Value;
+        _blendDataCache[name] = map;
+        return map;
+    } catch (_) { return {}; }
+}
+
+async function _applyBlendMix() {
+    const nameA = document.getElementById("blend-a").value;
+    const nameB = document.getElementById("blend-b").value;
+    const ratio = parseFloat(document.getElementById("blend-ratio").value); // 0=A,1=B
+
+    const [dataA, dataB] = await Promise.all([_fetchExp(nameA), _fetchExp(nameB)]);
+    const keys = new Set([...Object.keys(dataA), ...Object.keys(dataB)]);
+
+    const result = {};
+    for (const k of keys) {
+        const a = dataA[k] ?? 0;
+        const b = dataB[k] ?? 0;
+        result[k] = a + (b - a) * ratio;
+    }
+
+    // Apply to model and sliders.
+    _reset();
+    for (const [id, val] of Object.entries(result)) {
+        const sl = _sliders[id];
+        if (!sl) continue;
+        sl.value = val;
+        _valueEls[id].textContent = _fmt(val);
+        _updateSliderBackground(sl);
+        if (_core) { try { _core.setParameterValueById(id, val); } catch(_) {} }
+    }
+
+    // Show JSON preview.
+    const parameters = Object.entries(result)
+        .filter(([, v]) => Math.abs(v) > 0.0005)
+        .map(([Id, Value]) => ({ Id, Value: parseFloat(Value.toFixed(5)), Blend: "Add" }));
+    const preview = { "Type": "Live2D Expression", Parameters: parameters };
+    document.getElementById("blend-result").style.display = "block";
+    document.getElementById("blend-result-json").textContent = JSON.stringify(preview, null, 2);
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function _toast(msg) {
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    setTimeout(() => el.classList.remove("show"), 2200);
+}
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById("pane-" + tab.dataset.tab).classList.add("active");
+    });
+});
+
+// ── Toolbar buttons ───────────────────────────────────────────────────────────
+document.getElementById("btn-reset").addEventListener("click", _reset);
+document.getElementById("btn-export").addEventListener("click", _exportJSON);
+document.getElementById("btn-load").addEventListener("click", _loadFile);
+
+// ── Blend ratio label ─────────────────────────────────────────────────────────
+document.getElementById("blend-ratio").addEventListener("input", (e) => {
+    document.getElementById("blend-ratio-val").textContent =
+        parseFloat(e.target.value).toFixed(2);
+    _updateSliderBackground(e.target);
+});
+
+// ── Apply blend button ────────────────────────────────────────────────────────
+document.getElementById("apply-blend").addEventListener("click", _applyBlendMix);
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+_boot();
+</script>
+</body>
+</html>

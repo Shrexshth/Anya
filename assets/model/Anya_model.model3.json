@@ -1,0 +1,92 @@
+{
+    "Version": 3,
+    "FileReferences": {
+        "Moc": "Anya_model.moc3",
+        "Textures": [
+            "Anya_model.8192/texture_00.png"
+        ],
+        "Physics": "Anya_model.physics3.json",
+        "DisplayInfo": "Anya_model.cdi3.json",
+        "Expressions": [
+            {
+                "Name": "Angry.exp3",
+                "File": "expressions/Angry.exp3.json"
+            },
+            {
+                "Name": "Bored.exp3",
+                "File": "expressions/Bored.exp3.json"
+            },
+            {
+                "Name": "Excited.exp3",
+                "File": "expressions/Excited.exp3.json"
+            },
+            {
+                "Name": "Happy.exp3",
+                "File": "expressions/Happy.exp3.json"
+            },
+            {
+                "Name": "Pout.exp3",
+                "File": "expressions/Pout.exp3.json"
+            },
+            {
+                "Name": "Romantic.exp3",
+                "File": "expressions/Romantic.exp3.json"
+            },
+            {
+                "Name": "Sad.exp3",
+                "File": "expressions/Sad.exp3.json"
+            },
+            {
+                "Name": "Scared.exp3",
+                "File": "expressions/Scared.exp3.json"
+            },
+            {
+                "Name": "Shining_eyes.exp3",
+                "File": "expressions/Shining_eyes.exp3.json"
+            },
+            {
+                "Name": "Shy.exp3",
+                "File": "expressions/Shy.exp3.json"
+            },
+            {
+                "Name": "Sleepy.exp3",
+                "File": "expressions/Sleepy.exp3.json"
+            },
+            {
+                "Name": "Smile_1.exp3",
+                "File": "expressions/Smile_1.exp3.json"
+            },
+            {
+                "Name": "Smug.exp3",
+                "File": "expressions/Smug.exp3.json"
+            },
+            {
+                "Name": "Surprise.exp3",
+                "File": "expressions/Surprise.exp3.json"
+            },
+            {
+                "Name": "Thinking.exp3",
+                "File": "expressions/Thinking.exp3.json"
+            }
+        ]
+    },
+    "Groups": [
+        {
+            "Target": "Parameter",
+            "Name": "EyeBlink",
+            "Ids": [
+                "ParamEyeLOpen",
+                "ParamEyeLSmile",
+                "ParamEyeROpen",
+                "ParamEyeRSmile"
+            ]
+        },
+        {
+            "Target": "Parameter",
+            "Name": "LipSync",
+            "Ids": [
+                "ParamMouthOpenY"
+            ]
+        }
+    ]
+}

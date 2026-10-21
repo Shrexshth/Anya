@@ -1,0 +1,73 @@
+# Emotion engine baseline dimensions, decay rates, and thresholds.
+
+# Voice styles for Piper TTS and pitch shifting (WP4)
+# length_scale: speed (lower = faster, higher = slower)
+# noise_scale: phoneme noise / expressiveness (higher = sharper, lower = flatter/softer)
+# noise_w: phoneme duration variability (higher = livelier/more dynamic)
+# pitch_shift: pitch multiplier (1.0 = normal, >1.0 = higher, <1.0 = lower)
+voice_styles:
+  baseline:
+    length_scale: 1.00
+    noise_scale: 0.667
+    noise_w: 0.800
+    pitch_shift: 1.000
+
+  angry:
+    length_scale: 0.82
+    noise_scale: 0.900
+    noise_w: 0.950
+    pitch_shift: 1.050
+
+  sad:
+    length_scale: 1.30
+    noise_scale: 0.350
+    noise_w: 0.400
+    pitch_shift: 0.920
+
+  romantic:
+    length_scale: 1.20
+    noise_scale: 0.450
+    noise_w: 0.600
+    pitch_shift: 0.970
+
+  excited:
+    length_scale: 0.80
+    noise_scale: 0.950
+    noise_w: 0.950
+    pitch_shift: 1.100
+
+  happy:
+    length_scale: 0.88
+    noise_scale: 0.750
+    noise_w: 0.850
+    pitch_shift: 1.050
+
+  shy:
+    length_scale: 1.15
+    noise_scale: 0.500
+    noise_w: 0.650
+    pitch_shift: 1.030
+
+  smug:
+    length_scale: 1.05
+    noise_scale: 0.700
+    noise_w: 0.850
+    pitch_shift: 1.020
+
+  thinking:
+    length_scale: 1.18
+    noise_scale: 0.550
+    noise_w: 0.600
+    pitch_shift: 0.970
+
+  sleepy:
+    length_scale: 1.40
+    noise_scale: 0.300
+    noise_w: 0.350
+    pitch_shift: 0.900
+
+  surprised:
+    length_scale: 0.85
+    noise_scale: 0.850
+    noise_w: 0.900
+    pitch_shift: 1.120

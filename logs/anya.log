@@ -1,0 +1,87 @@
+2026-10-18 00:40:24 [INFO] [anya.main]: Anya configuration initialized successfully.
+2026-10-18 00:49:43 [INFO] [anya.main]: Anya configuration initialized successfully.
+2026-10-18 00:51:07 [INFO] [anya.main]: Anya configuration initialized successfully.
+2026-10-18 00:51:33 [INFO] [anya.main]: Anya configuration initialized successfully.
+2026-10-18 01:03:12 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-18 01:03:14 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/debug.html
+2026-10-18 01:03:14 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-18 01:03:15 [INFO] [anya.ui.bridge]: Live2D Avatar signaled: modelReady
+2026-10-18 01:05:00 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-18 01:05:00 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-18 01:05:00 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-18 01:05:00 [INFO] [anya.ui.bridge]: Live2D Avatar signaled: modelReady
+2026-10-18 01:41:51 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-18 01:41:52 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-18 01:41:52 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-18 01:41:52 [INFO] [anya.ui.bridge]: Live2D Avatar signaled: modelReady
+2026-10-18 01:45:19 [INFO] [anya.ui.server]: Stopping HTTP server...
+2026-10-20 20:27:51 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-20 20:27:52 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-20 20:27:52 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-20 20:27:53 [INFO] [anya.ui.bridge]: Live2D Avatar signaled: modelReady
+2026-10-20 20:35:17 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-20 20:35:31 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-20 20:35:31 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-20 20:35:31 [INFO] [anya.ui.window]: Global hotkey registered: <ctrl>+<alt>+a
+2026-10-20 20:35:31 [INFO] [anya.ui.bridge]: Live2D Avatar signaled: modelReady
+2026-10-20 20:36:45 [INFO] [anya.ui.window]: Window centred at (605, 177) on screen 'Built-in Retina Display'.
+2026-10-20 20:36:49 [INFO] [anya.ui.window]: Saved window geometry cleared.
+2026-10-20 20:36:49 [INFO] [anya.ui.window]: Window reset to default size and position.
+2026-10-20 20:36:51 [INFO] [anya.ui.window]: Click-through toggled: True
+2026-10-21 18:55:52 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 18:55:52 [INFO] [anya.main]: Running in headless mode (--headless). Server is active.
+2026-10-21 18:55:53 [INFO] [anya.main]: [WP4 Test] Synthesizing happy sentence (headless)...
+2026-10-21 18:55:53 [INFO] [anya.core.speaker]: speak_stream started: 1 sentence(s), emotion=happy, utterance_id=cdce7d66
+2026-10-21 18:55:53 [INFO] [anya.core.speaker]: Loading Piper TTS model: /Users/shreshthsingh/Desktop/Anya/assets/voices/en_US-lessac-medium.onnx
+2026-10-21 18:55:53 [INFO] [anya.main]: [WP4 Test] Synthesizing sad sentence (headless)...
+2026-10-21 18:55:53 [INFO] [anya.core.speaker]: speak_stream started: 1 sentence(s), emotion=sad, utterance_id=15ae3044
+2026-10-21 18:55:54 [INFO] [anya.main]: [WP4 Test] Completed headless speech synthesis test.
+2026-10-21 19:00:49 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 19:00:50 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-21 19:00:50 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-21 19:01:07 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 19:01:08 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-21 19:01:08 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-21 19:02:34 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 19:02:35 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-21 19:02:35 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-21 19:06:18 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 19:06:18 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-21 19:06:19 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-21 19:06:19 [INFO] [anya.ui.window]: Global hotkey registered: <ctrl>+<alt>+a
+2026-10-21 19:06:19 [INFO] [anya.ui.bridge]: Live2D Avatar signaled: modelReady
+2026-10-21 19:06:20 [INFO] [anya.core.speaker]: Cleaned up 2 stale TTS cache file(s) from /Users/shreshthsingh/Desktop/Anya/assets/cache
+2026-10-21 19:06:20 [INFO] [anya.main]: [WP4 Test] Starting verification: speaking happy sentence...
+2026-10-21 19:06:20 [INFO] [anya.ui.bridge]: set_emotion {'happy': 0.8} (transition 500 ms)
+2026-10-21 19:06:20 [INFO] [anya.core.speaker]: speak_stream started: 1 sentence(s), emotion=happy, utterance_id=4f8aa96f
+2026-10-21 19:06:20 [INFO] [anya.core.speaker]: Loading Piper TTS model: /Users/shreshthsingh/Desktop/Anya/assets/voices/en_US-lessac-medium.onnx
+2026-10-21 19:06:28 [INFO] [anya.ui.server]: Stopping HTTP server...
+2026-10-21 19:06:42 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 19:06:42 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-21 19:06:42 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-21 19:07:34 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 19:07:34 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-21 19:07:34 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-21 19:18:42 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 19:18:43 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-21 19:18:43 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-21 19:22:25 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 19:22:26 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-21 19:22:26 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-21 19:22:34 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 19:22:34 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-21 19:22:34 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-21 19:22:41 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 19:22:42 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-21 19:22:42 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-21 19:26:50 [INFO] [anya.ui.server]: Serving Anya UI & Assets on http://127.0.0.1:8000/ (daemon thread)
+2026-10-21 19:26:50 [INFO] [anya.ui.window]: Global hotkey registered: <ctrl>+<alt>+a
+2026-10-21 19:26:50 [INFO] [anya.ui.window]: Loading Live2D avatar viewport: http://127.0.0.1:8000/index.html
+2026-10-21 19:26:50 [INFO] [anya.main]: Entering Qt event loop...
+2026-10-21 19:26:50 [INFO] [anya.ui.bridge]: Live2D Avatar signaled: modelReady
+2026-10-21 19:26:51 [INFO] [anya.core.speaker]: Cleaned up 4 stale TTS cache file(s) from /Users/shreshthsingh/Desktop/Anya/assets/cache
+2026-10-21 19:26:51 [INFO] [anya.main]: [WP4 Test] Starting verification: speaking happy sentence...
+2026-10-21 19:26:51 [INFO] [anya.ui.bridge]: set_emotion {'happy': 0.8} (transition 500 ms)
+2026-10-21 19:26:51 [INFO] [anya.core.speaker]: speak_stream started: 1 sentence(s), emotion=happy, utterance_id=ceccdf85
+2026-10-21 19:26:51 [INFO] [anya.core.speaker]: Loading Piper TTS model: /Users/shreshthsingh/Desktop/Anya/assets/voices/en_US-lessac-medium.onnx
+2026-10-21 19:26:55 [INFO] [anya.ui.server]: Stopping HTTP server...
