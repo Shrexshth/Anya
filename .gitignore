@@ -5,3 +5,7 @@ assets/cache/
 logs/*.log
 .DS_Store
 .pytest_cache/
+*.npz
+data/*.db
+data/*.db-wal
+data/*.db-shm

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anya - Expression Debug Panel</title>
+    <title>Anya - Expression & Emotion Debug Panel</title>
     <style>
         * {
             margin: 0;
@@ -27,7 +27,6 @@
             height: 100%;
             z-index: 1;
         }
-        /* PIXI appends its canvas to body; make it fill behind the panel */
         canvas {
             position: absolute;
             top: 0;
@@ -42,55 +41,119 @@
             top: 16px;
             left: 16px;
             z-index: 10;
-            width: 240px;
+            width: 320px;
             max-height: calc(100vh - 32px);
             overflow-y: auto;
-            background: rgba(18, 22, 30, 0.82);
-            backdrop-filter: blur(12px);
+            background: rgba(18, 22, 30, 0.88);
+            backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 12px;
             padding: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         }
         .debug-panel h2 {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: #f472b6;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .status {
+        .section-title {
             font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
             color: #94a3b8;
-            margin-bottom: 12px;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 2px;
+        }
+        .status-box {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 11px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .status-row {
             display: flex;
             justify-content: space-between;
         }
-        .status span.active-expr {
+        .active-val {
             color: #38bdf8;
             font-weight: 600;
+        }
+        .mood-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 12px;
+        }
+        .mood-row {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+            gap: 6px;
+        }
+        .mood-label {
+            width: 70px;
+            text-transform: capitalize;
+            color: #cbd5e1;
+        }
+        .bar-container {
+            flex: 1;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        .bar-fill {
+            height: 100%;
+            background: #38bdf8;
+            border-radius: 4px;
+            transition: width 0.25s ease, background-color 0.25s ease;
+        }
+        .mood-val {
+            width: 32px;
+            text-align: right;
+            font-family: monospace;
+            font-size: 10px;
+            color: #94a3b8;
         }
         .btn-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 10px;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+        .btn-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4px;
+            margin-bottom: 8px;
         }
         button {
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 6px;
             color: #cbd5e1;
-            padding: 7px 6px;
-            font-size: 11px;
+            padding: 5px 4px;
+            font-size: 10px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.15s ease;
             text-align: center;
         }
         button:hover {
-            background: rgba(244, 114, 182, 0.2);
+            background: rgba(244, 114, 182, 0.25);
             border-color: #f472b6;
             color: #ffffff;
             transform: translateY(-1px);
@@ -101,8 +164,24 @@
             color: #0f172a;
             font-weight: 700;
         }
+        button.mode-btn.active {
+            background: #a855f7;
+            border-color: #c084fc;
+            color: #ffffff;
+        }
+        button.event-btn {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: rgba(56, 189, 248, 0.2);
+            color: #bae6fd;
+        }
+        button.event-btn:hover {
+            background: rgba(56, 189, 248, 0.25);
+            border-color: #38bdf8;
+            color: #ffffff;
+        }
         button.clear-btn {
-            grid-column: span 2;
+            width: 100%;
+            margin-top: 6px;
             background: rgba(239, 68, 68, 0.18);
             border-color: rgba(239, 68, 68, 0.4);
             color: #fca5a5;
@@ -113,7 +192,7 @@
         }
     </style>
 
-    <!-- Pinned Live2D Cubism Core & PIXI Runtime -->
+    <!-- Live2D Cubism Core & PIXI Runtime -->
     <script src="vendor/live2dcubismcore.min.js"></script>
     <script src="vendor/pixi.min.js"></script>
     <script src="vendor/cubism4.min.js"></script>
@@ -121,11 +200,58 @@
 </head>
 <body>
     <div class="debug-panel">
-        <h2>Anya Expressions</h2>
-        <div class="status">
-            <span>Current: <span id="current-name" class="active-expr">Neutral</span></span>
-            <span id="fps-counter">30 FPS</span>
+        <h2>Anya Expressions <span id="fps-counter" style="font-size:10px;color:#94a3b8;">30 FPS</span></h2>
+
+        <!-- Emotional State Status -->
+        <div class="status-box">
+            <div class="status-row">
+                <span>Dominant:</span>
+                <span id="current-dominant" class="active-val">Happy (0.75)</span>
+            </div>
+            <div class="status-row">
+                <span>Mode:</span>
+                <span id="current-mode" class="active-val" style="color:#c084fc;">friend_roast</span>
+            </div>
+            <div class="status-row">
+                <span>Secondary Blend:</span>
+                <span id="current-blend" style="color:#94a3b8;font-size:9px;">excited: 0.40</span>
+            </div>
         </div>
+
+        <!-- 8 Live Mood Bars -->
+        <div class="section-title">Live Mood Vector</div>
+        <div class="mood-bars" id="mood-bars-container">
+            <!-- Dynamically generated 8 mood bars -->
+        </div>
+
+        <!-- Personality Modes -->
+        <div class="section-title">Personality Modes</div>
+        <div class="btn-grid-3" id="modes-container">
+            <button class="mode-btn active" data-mode="friend_roast">Friend</button>
+            <button class="mode-btn" data-mode="romantic">Romantic</button>
+            <button class="mode-btn" data-mode="study">Study</button>
+            <button class="mode-btn" data-mode="sassy">Sassy</button>
+            <button class="mode-btn" data-mode="chill">Chill</button>
+            <button class="mode-btn" data-mode="professional">Professional</button>
+        </div>
+
+        <!-- Inject Events -->
+        <div class="section-title">Inject Appraisal Events</div>
+        <div class="btn-grid">
+            <button class="event-btn" data-event="compliment">Compliment</button>
+            <button class="event-btn" data-event="insult">Insult</button>
+            <button class="event-btn" data-event="apology">Apology (Cool Anger)</button>
+            <button class="event-btn" data-event="flirting">Flirt</button>
+            <button class="event-btn" data-event="sad_news">Sad News</button>
+            <button class="event-btn" data-event="roast_request">Roast Me</button>
+            <button class="event-btn" data-event="task_success">Task Success</button>
+            <button class="event-btn" data-event="task_fail">Task Fail</button>
+            <button class="event-btn" data-event="returned_after_absence">Returned Home</button>
+            <button class="event-btn" data-event="command_spam">Command Spam</button>
+        </div>
+
+        <!-- Live2D Expressions Grid -->
+        <div class="section-title">Direct Expressions</div>
         <div class="btn-grid" id="button-container">
             <!-- Buttons dynamically populated -->
         </div>
@@ -144,11 +270,143 @@
             "Smug", "Surprise", "Thinking"
         ];
 
-        const container = document.getElementById("button-container");
-        const currentNameEl = document.getElementById("current-name");
-        const clearBtn = document.getElementById("clear-btn");
-        let activeButton = null;
+        const MOOD_DIMENSIONS = [
+            { name: "happiness", color: "#4ade80" },
+            { name: "anger", color: "#f87171" },
+            { name: "sadness", color: "#60a5fa" },
+            { name: "affection", color: "#f472b6" },
+            { name: "energy", color: "#fbbf24" },
+            { name: "playfulness", color: "#c084fc" },
+            { name: "boredom", color: "#94a3b8" },
+            { name: "anxiety", color: "#fb923c" }
+        ];
 
+        // Current local simulation state
+        const moodState = {
+            happiness: 0.65,
+            anger: 0.05,
+            sadness: 0.05,
+            affection: 0.40,
+            energy: 0.70,
+            playfulness: 0.80,
+            boredom: 0.10,
+            anxiety: 0.05
+        };
+
+        let currentMode = "friend_roast";
+        let activeExprButton = null;
+
+        // Build Mood Bars
+        const moodContainer = document.getElementById("mood-bars-container");
+        MOOD_DIMENSIONS.forEach(d => {
+            const row = document.createElement("div");
+            row.className = "mood-row";
+            row.innerHTML = `
+                <span class="mood-label">${d.name}</span>
+                <div class="bar-container">
+                    <div class="bar-fill" id="bar-${d.name}" style="background-color:${d.color};width:${moodState[d.name]*100}%;"></div>
+                </div>
+                <span class="mood-val" id="val-${d.name}">${moodState[d.name].toFixed(2)}</span>
+            `;
+            moodContainer.appendChild(row);
+        });
+
+        function updateMoodDisplay() {
+            MOOD_DIMENSIONS.forEach(d => {
+                const fillEl = document.getElementById("bar-" + d.name);
+                const valEl = document.getElementById("val-" + d.name);
+                const pct = Math.min(100, Math.max(0, moodState[d.name] * 100));
+                if (fillEl) fillEl.style.width = pct + "%";
+                if (valEl) valEl.textContent = moodState[d.name].toFixed(2);
+            });
+
+            // Dominant emotion calculation formula
+            let scores = {
+                happy: 0.6 * moodState.happiness + 0.3 * moodState.energy + 0.1 * moodState.playfulness - 0.4 * moodState.sadness - 0.3 * moodState.anger,
+                excited: 0.5 * moodState.energy + 0.4 * moodState.happiness + 0.3 * moodState.playfulness - 0.3 * moodState.boredom,
+                smug: 0.5 * moodState.playfulness + 0.3 * moodState.happiness + 0.2 * moodState.energy - 0.4 * moodState.anxiety,
+                romantic: 0.6 * moodState.affection + 0.3 * moodState.happiness - 0.4 * moodState.anger - 0.2 * moodState.boredom,
+                shy: 0.4 * moodState.affection + 0.4 * moodState.anxiety + 0.2 * moodState.happiness - 0.3 * moodState.energy,
+                sad: 0.7 * moodState.sadness + 0.2 * moodState.anxiety - 0.5 * moodState.happiness,
+                angry: 0.8 * moodState.anger + 0.2 * moodState.energy - 0.5 * moodState.happiness - 0.3 * moodState.affection,
+                sleepy: 0.6 * (1.0 - moodState.energy) + 0.3 * moodState.boredom - 0.4 * moodState.anxiety,
+                bored: 0.6 * moodState.boredom - 0.3 * moodState.playfulness - 0.3 * moodState.happiness
+            };
+
+            let ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            let topEmo = ranked[0][0];
+            let topScore = Math.max(0.1, ranked[0][1]);
+            let intensity = Math.min(1.0, topScore);
+
+            let blendItems = ranked.slice(1).filter(r => r[1] > 0.2).map(r => `${r[0]}: ${r[1].toFixed(2)}`);
+            document.getElementById("current-dominant").textContent = `${topEmo.toUpperCase()} (${intensity.toFixed(2)})`;
+            document.getElementById("current-blend").textContent = blendItems.join(", ") || "none";
+
+            // Trigger Live2D expression or blend if available
+            const expMap = {
+                happy: "Happy", excited: "Excited", smug: "Smug",
+                romantic: "Romantic", shy: "Shy", sad: "Sad",
+                angry: "Angry", sleepy: "Sleepy", bored: "Bored"
+            };
+            const mappedName = expMap[topEmo] || "Happy";
+            if (window.anya && typeof window.anya.setExpression === "function") {
+                window.anya.setExpression(mappedName);
+            }
+        }
+
+        // Event Deltas Table
+        const EVENT_DELTAS = {
+            compliment: { happiness: 0.15, affection: 0.10, playfulness: 0.05 },
+            insult: { anger: 0.25, happiness: -0.20, affection: -0.15 },
+            apology: { anger: -0.35, affection: 0.10, happiness: 0.05 },
+            flirting: { affection: 0.25, happiness: 0.15, playfulness: 0.10 },
+            sad_news: { sadness: 0.30, happiness: -0.20, affection: 0.20 },
+            roast_request: { playfulness: 0.30, energy: 0.15, happiness: 0.10 },
+            task_success: { happiness: 0.15, energy: 0.10, boredom: -0.10 },
+            task_fail: { anxiety: 0.15, happiness: -0.10, energy: -0.05 },
+            returned_after_absence: { affection: 0.20, happiness: 0.20, boredom: -0.20 },
+            command_spam: { anger: 0.20, anxiety: 0.15, playfulness: -0.20 }
+        };
+
+        // Attach event button listeners
+        document.querySelectorAll("button.event-btn").forEach(btn => {
+            btn.onclick = () => {
+                const evName = btn.dataset.event;
+                const deltas = EVENT_DELTAS[evName] || {};
+                for (let k in deltas) {
+                    if (moodState[k] !== undefined) {
+                        moodState[k] = Math.min(k === "anger" ? 0.85 : 1.0, Math.max(0.0, moodState[k] + deltas[k]));
+                    }
+                }
+                updateMoodDisplay();
+            };
+        });
+
+        // Mode buttons
+        document.querySelectorAll("button.mode-btn").forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll("button.mode-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentMode = btn.dataset.mode;
+                document.getElementById("current-mode").textContent = currentMode;
+
+                // Mode baseline application
+                if (currentMode === "professional") {
+                    moodState.anger = 0.0;
+                    moodState.playfulness = 0.0;
+                } else if (currentMode === "romantic") {
+                    moodState.affection = 0.85;
+                    moodState.happiness = 0.75;
+                } else if (currentMode === "chill") {
+                    moodState.energy = 0.35;
+                    moodState.anxiety = 0.02;
+                }
+                updateMoodDisplay();
+            };
+        });
+
+        // Direct expression buttons
+        const container = document.getElementById("button-container");
         EXPRESSIONS.forEach(name => {
             const btn = document.createElement("button");
             btn.textContent = name;
@@ -156,30 +414,31 @@
                 if (window.anya && typeof window.anya.setExpression === "function") {
                     window.anya.setExpression(name);
                 }
-                currentNameEl.textContent = name;
-                if (activeButton) activeButton.classList.remove("active");
+                if (activeExprButton) activeExprButton.classList.remove("active");
                 btn.classList.add("active");
-                activeButton = btn;
+                activeExprButton = btn;
             };
             container.appendChild(btn);
         });
 
-        clearBtn.onclick = () => {
+        document.getElementById("clear-btn").onclick = () => {
             if (window.anya && typeof window.anya.clearExpression === "function") {
                 window.anya.clearExpression();
             }
-            currentNameEl.textContent = "Neutral";
-            if (activeButton) activeButton.classList.remove("active");
-            activeButton = null;
+            if (activeExprButton) activeExprButton.classList.remove("active");
+            activeExprButton = null;
         };
 
-        // Update FPS display from PIXI Ticker
+        // Live FPS ticker
         setInterval(() => {
             if (window.PIXI && PIXI.Ticker && PIXI.Ticker.shared) {
                 const fps = Math.round(PIXI.Ticker.shared.FPS || 0);
                 document.getElementById("fps-counter").textContent = fps + " FPS";
             }
         }, 500);
+
+        // Initial render
+        updateMoodDisplay();
     </script>
 </body>
 </html>

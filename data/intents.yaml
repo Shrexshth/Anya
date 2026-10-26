@@ -1,1 +1,250 @@
-# Intent training phrases and slot definitions for Tier 1 fuzzy matching.
+# ==============================================================================
+# Anya Intent Definitions and Training Phrases for Tier 1 Matching & Slots
+# ==============================================================================
+
+intents:
+  calendar.get_events:
+    skill: "calendar.get_events"
+    description: "Check calendar events or daily schedule"
+    slots:
+      date: "(?:for|on)?\\s*(?P<date>today|tomorrow|this week|monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
+    phrases:
+      - "what is on my calendar today"
+      - "check my schedule for tomorrow"
+      - "do I have any meetings today"
+      - "what appointments do I have this week"
+      - "show my upcoming calendar events"
+      - "what does my schedule look like"
+      - "any meetings coming up"
+      - "read my calendar for today"
+      - "what events do I have scheduled"
+      - "tell me my schedule for this week"
+
+  calendar.create_event:
+    skill: "calendar.create_event"
+    description: "Create or schedule a calendar event"
+    slots:
+      title: "(?:called|named|title|event)\\s+(?P<title>[a-zA-Z0-9\\s]+)"
+      time: "(?:at|for|on)\\s+(?P<time>[a-zA-Z0-9\\s:]+)"
+    phrases:
+      - "schedule a meeting tomorrow at 3pm"
+      - "add an event to my calendar"
+      - "put doctor appointment on my calendar"
+      - "create a new calendar event"
+      - "schedule lunch with team on Friday"
+      - "book a meeting for 10am tomorrow"
+      - "add dentist appointment to calendar"
+      - "create calendar entry for project review"
+      - "set up a meeting on Monday morning"
+      - "schedule a new appointment"
+
+  notes.create_note:
+    skill: "notes.create_note"
+    description: "Create or save a quick note"
+    slots:
+      content: "(?:note|that|saying)\\s+(?P<content>.+)"
+    phrases:
+      - "take a note for me"
+      - "create a new note"
+      - "write this down in notes"
+      - "make a quick note"
+      - "save this note"
+      - "add a note about the meeting"
+      - "jot this down in my notes"
+      - "write a new note titled ideas"
+      - "record a quick memo in notes"
+      - "save a thought to my notes"
+
+  notes.get_notes:
+    skill: "notes.get_notes"
+    description: "Read or search existing notes"
+    slots:
+      query: "(?:about|titled|for)\\s+(?P<query>[a-zA-Z0-9\\s]+)"
+    phrases:
+      - "read my recent notes"
+      - "show me my notes"
+      - "find my note about shopping"
+      - "what notes do I have"
+      - "open my latest notes"
+      - "search my notes for meeting"
+      - "display all my saved notes"
+      - "list all notes from today"
+      - "show me notes from yesterday"
+      - "search notes for project ideas"
+
+  research.web_search:
+    skill: "research.web_search"
+    description: "Search the web for information"
+    slots:
+      query: "(?:for|about)\\s+(?P<query>.+)"
+    phrases:
+      - "search the web for python tutorials"
+      - "look up the weather in Tokyo"
+      - "google search machine learning papers"
+      - "search online for healthy recipes"
+      - "find information on quantum physics"
+      - "search the internet for latest tech news"
+      - "look up how to make sourdough bread"
+      - "do a web search for apple silicon specs"
+      - "search online for top restaurants nearby"
+      - "look up documentation for fastapi"
+
+  productivity.add_task:
+    skill: "productivity.add_task"
+    description: "Add a task or todo item"
+    slots:
+      task: "(?:task|todo|to)\\s+(?P<task>.+)"
+    phrases:
+      - "add a task to my todo list"
+      - "remind me to buy groceries"
+      - "put finish the report on my task list"
+      - "add buy milk to my todos"
+      - "create a new todo item"
+      - "add review pull request to my tasks"
+      - "remind me to call mom later"
+      - "put water the plants on my checklist"
+      - "add a new reminder for tomorrow"
+      - "create a task to email the client"
+
+  productivity.list_tasks:
+    skill: "productivity.list_tasks"
+    description: "List or check tasks and todos"
+    phrases:
+      - "what are my tasks for today"
+      - "show me my todo list"
+      - "what do I need to get done"
+      - "list all my pending tasks"
+      - "check my reminders list"
+      - "what is on my todo list"
+      - "display my current tasks"
+      - "read my tasks for this afternoon"
+      - "show unfinished todos"
+      - "what items are left on my checklist"
+
+  spotify.play_music:
+    skill: "spotify.play_music"
+    description: "Play music, artists, or playlists on Spotify"
+    slots:
+      query: "(?:play|listen to)\\s+(?P<query>.+)"
+    phrases:
+      - "play some lo-fi beats on spotify"
+      - "play the latest album by daft punk"
+      - "listen to classical study music"
+      - "put on some chill jazz music"
+      - "play my discover weekly playlist"
+      - "play some upbeat workout songs"
+      - "start playing acoustic playlist"
+      - "play relaxing ambient sound on spotify"
+      - "play synthwave music on spotify"
+      - "listen to piano instrumental music"
+
+  screen.capture_screen:
+    skill: "screen.capture_screen"
+    description: "Capture screenshot or inspect the current screen"
+    phrases:
+      - "take a screenshot of my screen"
+      - "capture the current screen"
+      - "snap a screenshot right now"
+      - "save a picture of my desktop"
+      - "take a capture of what is on screen"
+      - "grab a screenshot of this window"
+      - "capture my display to an image"
+      - "take a snapshot of the screen"
+      - "record a screenshot of my monitor"
+      - "snap the current display"
+
+  clipboard.get_clipboard:
+    skill: "clipboard.get_clipboard"
+    description: "Inspect or read clipboard contents"
+    phrases:
+      - "what is in my clipboard"
+      - "read the clipboard content"
+      - "show me what I just copied"
+      - "paste the clipboard text"
+      - "check what is currently copied"
+      - "read back my clipboard"
+      - "display clipboard contents"
+      - "what text is copied right now"
+      - "inspect my clipboard buffer"
+      - "print clipboard contents"
+
+  mail.check_mail:
+    skill: "mail.check_mail"
+    description: "Check for new emails or inbox"
+    phrases:
+      - "check my unread emails"
+      - "do I have any new mail"
+      - "check inbox for new messages"
+      - "read my latest email"
+      - "show unread emails from today"
+      - "any new messages in my inbox"
+      - "check my email inbox right now"
+      - "who sent me an email recently"
+      - "look for urgent emails"
+      - "check incoming mail messages"
+
+  mail.send_mail:
+    skill: "mail.send_mail"
+    description: "Send an email to a contact"
+    slots:
+      contact: "(?:to|contact)\\s+(?P<contact>[a-zA-Z0-9\\s]+)"
+      subject: "(?:subject|about)\\s+(?P<subject>[a-zA-Z0-9\\s]+)"
+    phrases:
+      - "send an email to Alice"
+      - "compose an email to Bob"
+      - "write an email to Charlie about the project"
+      - "email David with the report"
+      - "send a mail to Sarah saying thank you"
+      - "draft an email to manager"
+      - "send an email to Alex with subject update"
+      - "email John about tomorrow's schedule"
+      - "send an email to my boss"
+      - "compose a message to professor"
+
+  messenger.send_message:
+    skill: "messenger.send_message"
+    description: "Send a chat message to a contact"
+    slots:
+      contact: "(?:to|contact)\\s+(?P<contact>[a-zA-Z0-9\\s]+)"
+      message: "(?:saying|message|text)\\s+(?P<message>.+)"
+    phrases:
+      - "send a text message to Alice"
+      - "message Bob saying I will be late"
+      - "text Charlie that I arrived"
+      - "send a message to Sarah on iMessage"
+      - "ping David with a quick text"
+      - "send a quick message to Alex"
+      - "text mom asking how she is doing"
+      - "send an iMessage to John saying see you soon"
+      - "send a chat message to Alice"
+      - "text Bob to call me back"
+
+  system.battery:
+    skill: "system.battery"
+    description: "Check battery percentage and status"
+    phrases:
+      - "what is my battery level"
+      - "check battery percentage"
+      - "how much battery do I have left"
+      - "is the laptop plugged into power"
+      - "what is the power status"
+      - "battery status check"
+      - "how full is my macbook battery"
+      - "tell me the remaining battery life"
+      - "check power percentage"
+      - "battery state of charge"
+
+  dev.git_status:
+    skill: "dev.git_status"
+    description: "Check git status and repository state"
+    phrases:
+      - "check git status for this project"
+      - "what git branch am I on"
+      - "show repository changes in git"
+      - "are there any uncommitted git changes"
+      - "show git working tree status"
+      - "check the status of git repository"
+      - "list modified files in git"
+      - "what files are changed in git"
+      - "show current branch and git diff"
+      - "git status report"

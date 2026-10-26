@@ -1,10 +1,6 @@
-# Emotion engine baseline dimensions, decay rates, and thresholds.
+# Emotion engine baseline dimensions, decay rates, scoring formulas, and appraisal tables.
 
 # Voice styles for Piper TTS and pitch shifting (WP4)
-# length_scale: speed (lower = faster, higher = slower)
-# noise_scale: phoneme noise / expressiveness (higher = sharper, lower = flatter/softer)
-# noise_w: phoneme duration variability (higher = livelier/more dynamic)
-# pitch_shift: pitch multiplier (1.0 = normal, >1.0 = higher, <1.0 = lower)
 voice_styles:
   baseline:
     length_scale: 1.00
@@ -71,3 +67,290 @@ voice_styles:
     noise_scale: 0.850
     noise_w: 0.900
     pitch_shift: 1.120
+
+# Personality mode mood baselines (8 dimensions, 0.0 to 1.0)
+mode_baselines:
+  friend_roast:
+    happiness: 0.65
+    anger: 0.10
+    sadness: 0.05
+    affection: 0.40
+    energy: 0.70
+    playfulness: 0.80
+    boredom: 0.10
+    anxiety: 0.05
+
+  romantic:
+    happiness: 0.75
+    anger: 0.02
+    sadness: 0.05
+    affection: 0.85
+    energy: 0.60
+    playfulness: 0.50
+    boredom: 0.05
+    anxiety: 0.05
+
+  study:
+    happiness: 0.55
+    anger: 0.05
+    sadness: 0.05
+    affection: 0.35
+    energy: 0.65
+    playfulness: 0.15
+    boredom: 0.05
+    anxiety: 0.10
+
+  sassy:
+    happiness: 0.60
+    anger: 0.20
+    sadness: 0.05
+    affection: 0.30
+    energy: 0.75
+    playfulness: 0.75
+    boredom: 0.15
+    anxiety: 0.05
+
+  chill:
+    happiness: 0.60
+    anger: 0.02
+    sadness: 0.05
+    affection: 0.45
+    energy: 0.35
+    playfulness: 0.35
+    boredom: 0.10
+    anxiety: 0.02
+
+  professional:
+    happiness: 0.50
+    anger: 0.00
+    sadness: 0.02
+    affection: 0.20
+    energy: 0.60
+    playfulness: 0.00
+    boredom: 0.05
+    anxiety: 0.05
+
+# Half-lives for exponential decay towards baseline in seconds
+decay_half_lives:
+  happiness: 1800
+  anger: 300
+  sadness: 900
+  affection: 3600
+  energy: 1200
+  playfulness: 600
+  boredom: 900
+  anxiety: 600
+
+# Dominant emotion calculation formulas and weights
+emotion_formulas:
+  happy:
+    happiness: 0.60
+    energy: 0.25
+    playfulness: 0.15
+    sadness: -0.40
+    anger: -0.30
+  excited:
+    energy: 0.40
+    happiness: 0.35
+    playfulness: 0.25
+    boredom: -0.30
+  smug:
+    playfulness: 0.45
+    happiness: 0.30
+    energy: 0.25
+    anxiety: -0.40
+  romantic:
+    affection: 0.70
+    happiness: 0.30
+    energy: 0.10
+    anger: -0.40
+    boredom: -0.20
+  shy:
+    affection: 0.40
+    anxiety: 0.40
+    happiness: 0.20
+    energy: -0.30
+  sad:
+    sadness: 0.70
+    anxiety: 0.20
+    happiness: -0.50
+  angry:
+    anger: 0.80
+    energy: 0.20
+    happiness: -0.50
+    affection: -0.30
+  sleepy:
+    energy: -0.60
+    boredom: 0.30
+    anxiety: -0.40
+  bored:
+    boredom: 0.60
+    energy: -0.30
+    playfulness: -0.30
+    happiness: -0.30
+  thinking:
+    anxiety: 0.30
+    playfulness: -0.30
+    energy: -0.20
+
+# Hysteresis parameters
+hysteresis:
+  margin: 0.15
+  min_dwell_s: 4.0
+
+# Lexicon keyword lists for appraisal
+keywords:
+  compliments:
+    - "cute"
+    - "smart"
+    - "genius"
+    - "amazing"
+    - "awesome"
+    - "good job"
+    - "great job"
+    - "love you"
+    - "pretty"
+    - "beautiful"
+    - "wonderful"
+    - "brilliant"
+    - "good girl"
+    - "best companion"
+  insults:
+    - "stupid"
+    - "idiot"
+    - "dumb"
+    - "useless"
+    - "annoying"
+    - "hate you"
+    - "trash"
+    - "horrible"
+    - "terrible"
+    - "worst"
+    - "pathetic"
+    - "you suck"
+  swearing:
+    - "fuck"
+    - "shit"
+    - "damn"
+    - "bitch"
+    - "asshole"
+    - "bastard"
+    - "crap"
+  apologies:
+    - "sorry"
+    - "my bad"
+    - "apologize"
+    - "apologies"
+    - "forgive me"
+    - "didn't mean to"
+    - "didnt mean to"
+    - "pardon me"
+  thanks:
+    - "thank you"
+    - "thanks"
+    - "thx"
+    - "appreciate it"
+    - "grateful"
+    - "much obliged"
+  flirting:
+    - "marry me"
+    - "kiss me"
+    - "my sweetheart"
+    - "darling"
+    - "cutie"
+    - "date me"
+    - "fall in love"
+    - "be my girlfriend"
+    - "gorgeous"
+  sad_news:
+    - "passed away"
+    - "died"
+    - "lost my job"
+    - "broke up"
+    - "failed my exam"
+    - "feeling down"
+    - "depressed"
+    - "crying"
+    - "so sad"
+    - "hurt"
+    - "grief"
+    - "funeral"
+    - "hospital"
+  roast_requests:
+    - "roast me"
+    - "destroy me"
+    - "make fun of me"
+    - "be mean to me"
+    - "insult me"
+    - "cook me"
+
+# Event mood delta definitions
+event_deltas:
+  compliment:
+    happiness: 0.15
+    affection: 0.10
+    playfulness: 0.05
+    boredom: -0.05
+  insult:
+    anger: 0.25
+    happiness: -0.20
+    affection: -0.15
+  swearing:
+    anger: 0.10
+    anxiety: 0.05
+    playfulness: 0.05
+  apology:
+    anger: -0.35
+    affection: 0.10
+    happiness: 0.05
+    anxiety: -0.10
+  thanks:
+    happiness: 0.10
+    affection: 0.10
+    boredom: -0.05
+  flirting:
+    affection: 0.20
+    happiness: 0.15
+    playfulness: 0.10
+    anxiety: 0.05
+  sad_news:
+    sadness: 0.30
+    happiness: -0.20
+    affection: 0.20
+    energy: -0.10
+  roast_request:
+    playfulness: 0.30
+    energy: 0.15
+    happiness: 0.10
+  task_success:
+    happiness: 0.15
+    energy: 0.10
+    boredom: -0.10
+  task_fail:
+    anxiety: 0.15
+    happiness: -0.10
+    energy: -0.05
+  ignored_long:
+    boredom: 0.25
+    happiness: -0.10
+    energy: -0.15
+  returned_after_absence:
+    affection: 0.20
+    happiness: 0.20
+    boredom: -0.20
+  late_night:
+    energy: -0.25
+    boredom: 0.10
+    affection: 0.10
+  morning:
+    energy: 0.20
+    happiness: 0.10
+    boredom: -0.10
+  command_spam:
+    anger: 0.20
+    anxiety: 0.15
+    playfulness: -0.20
+  praise_for_task:
+    happiness: 0.20
+    affection: 0.15
+    playfulness: 0.10
