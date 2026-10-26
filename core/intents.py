@@ -286,8 +286,8 @@ class IntentMatcher:
                     loaded = np.load(cache_file, allow_pickle=True)
                     cached_hash = str(loaded.get("file_hash", ""))
                     if cached_hash == self.file_hash and len(loaded["embeddings"]) == len(self.phrases):
-                        self.phrases = list(loaded["phrases"])
-                        self.skills = list(loaded["skills"])
+                        self.phrases = [str(p) for p in loaded["phrases"]]
+                        self.skills = [str(s) for s in loaded["skills"]]
                         self.embeddings = np.asarray(loaded["embeddings"], dtype=np.float32)
                         logger.info(
                             "Loaded %d intent embeddings from disk cache (%s)",
@@ -394,8 +394,8 @@ class IntentMatcher:
 
         best_idx = int(np.argmax(sim_arr))
         best_sim = float(sim_arr[best_idx])
-        best_skill = self.skills[best_idx]
-        best_phrase = self.phrases[best_idx]
+        best_skill = str(self.skills[best_idx])
+        best_phrase = str(self.phrases[best_idx])
 
         # Extract slots for the candidate skill
         slots = self.extract_slots(clean_text, best_skill)
